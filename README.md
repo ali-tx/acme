@@ -27,6 +27,7 @@ Things you may want to cover:
 * Configuration
   
   git clone https://github.com/yourusername/acme-widget-co.git
+  
   cd acme-widget-co
 
 * Database creation
