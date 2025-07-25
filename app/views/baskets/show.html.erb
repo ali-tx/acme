@@ -1,0 +1,94 @@
+<div class="lg:grid lg:grid-cols-12 lg:gap-x-12">
+  <div class="lg:col-span-8">
+    <div class="flex justify-between items-center mb-8">
+      <h1 class="text-3xl font-bold text-gray-900">Your Shopping Basket</h1>
+      <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+        <%= @basket.basket_items.sum(:quantity) %> items
+      </span>
+    </div>
+
+    <% if @basket.basket_items.empty? %>
+      <div class="text-center py-12">
+        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+        </svg>
+        <h3 class="mt-2 text-lg font-medium text-gray-900">Your basket is empty</h3>
+        <p class="mt-1 text-gray-500">Start adding some amazing widgets to your basket!</p>
+        <div class="mt-6">
+          <%= link_to "Browse Products", root_path, class: "inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700" %>
+        </div>
+      </div>
+    <% else %>
+      <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+        <ul class="divide-y divide-gray-200">
+          <% @basket.basket_items.each do |item| %>
+            <li class="p-6">
+              <div class="flex items-center">
+                <div class="flex-shrink-0 h-16 w-16 rounded-md bg-gray-200 flex items-center justify-center">
+                  <span class="text-2xl text-gray-400">📦</span>
+                </div>
+                <div class="ml-4 flex-1 flex flex-col sm:flex-row sm:justify-between">
+                  <div>
+                    <h4 class="text-lg font-medium text-gray-900"><%= item.product.name %></h4>
+                    <p class="mt-1 text-sm text-gray-500"><%= item.product.code %></p>
+                  </div>
+                  <div class="mt-4 sm:mt-0 sm:ml-6 flex items-center">
+                    <div class="flex items-center border border-gray-300 rounded-md">
+                      <span class="px-3 py-1 text-gray-700"><%= item.quantity %></span>
+                    </div>
+                    <div class="ml-6 text-lg font-medium text-gray-900">
+                      <%= number_to_currency(item.product.price * item.quantity) %>
+                    </div>
+                    <div class="ml-6">
+                      <!-- app/views/baskets/_basket.html.erb -->
+                      <%= button_to remove_item_basket_path(item),
+                                    method: :delete,
+                                    form: {
+                                      class: "delete-item-form",
+                                      data: {
+                                        turbo_stream: true,
+                                        turbo_frame: "basket",
+                                        controller: "basket",
+                                        action: "ajax:success->basket#removeItem"
+                                      }
+                                    },
+                                    class: "text-red-500 hover:text-red-700" do %>
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                      <% end %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+
+      <div class="mt-6 flex justify-end">
+        <%= link_to "Proceed to Checkout", checkout_basket_path, class: "px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700" %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="lg:col-span-4 mt-8 lg:mt-0">
+    <h2 class="text-lg font-medium text-gray-900 mb-4">Available Products</h2>
+    <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+      <ul class="divide-y divide-gray-200">
+        <% @products.each do |product| %>
+          <li class="p-4">
+            <div class="flex justify-between items-center">
+              <div>
+                <h4 class="text-sm font-medium text-gray-900"><%= product.name %></h4>
+                <p class="text-sm text-gray-500"><%= number_to_currency(product.price) %></p>
+              </div>
+              <%= button_to 'Add', add_item_basket_path(product_id: product.id),
+                            class: "ml-4 inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-blue-600 hover:bg-blue-700" %>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</div>

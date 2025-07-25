@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <title>Acme Widget Co</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+  <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+  <%#= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+  <%#= stylesheet_link_tag "inter-font", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= javascript_importmap_tags %>
+</head>
+
+<body class="h-full bg-gray-50" data-controller="basket">
+<!--<div id="flash-messages" class="fixed top-4 right-4 z-50"></div>-->
+<div id="flash-container" class="fixed top-4 right-4 z-50"></div>
+<div class="min-h-full">
+  <!-- Navigation -->
+  <nav class="bg-gradient-to-r from-blue-600 to-blue-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <h1 class="text-white font-bold text-xl">Acme Widget Co</h1>
+          </div>
+          <div class="md:block">
+            <div class="ml-10 flex items-baseline space-x-4">
+              <%= link_to "Products", root_path, class: "text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium" %>
+              <%= link_to basket_path, class: "text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium" do %>
+                <span id="basket-count"><%= @basket.basket_items.sum(:quantity) %></span> items
+              <% end %>
+              <%= link_to "My Orders", my_orders_path, class: "text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium" %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main content -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <% if notice %>
+      <div class="rounded-md bg-green-50 p-4 mb-4">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <svg class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <div class="ml-3">
+            <p class="text-sm font-medium text-green-800"><%= notice %></p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <%= yield %>
+  </main>
+</div>
+</body>
+</html>

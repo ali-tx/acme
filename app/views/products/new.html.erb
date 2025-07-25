@@ -1,0 +1,20 @@
+<h1 class="text-2xl font-bold mb-4">New Product</h1>
+
+<%= form_with(model: @product) do |form| %>
+  <div class="mb-4">
+    <%= form.label :code, class: "block" %>
+    <%= form.text_field :code, class: "w-full px-3 py-2 border rounded" %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :name, class: "block" %>
+    <%= form.text_field :name, class: "w-full px-3 py-2 border rounded" %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :price, class: "block" %>
+    <%= form.number_field :price, step: 0.01, class: "w-full px-3 py-2 border rounded" %>
+  </div>
+
+  <%= form.submit "Create Product", class: "bg-blue-500 text-white px-4 py-2 rounded" %>
+<% end %>
